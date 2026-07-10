@@ -1,0 +1,69 @@
+/* Design tokens
+   Direction: a chalkboard, because the product is literally a study tool.
+   Chalk-white ink, a muted classroom green board, warm chalk-yellow as the
+   one accent, mint/rose for correct/incorrect (like a teacher's red pen,
+   but not literal red). Caveat (hand-chalk) for headings only; Inter for
+   body copy; IBM Plex Mono for anything numeric/labelled, like a card index. */
+:root {
+  --bg: #1f3b33;
+  --bg-soft: #24443b;
+  --bg-raised: #2b4f45;
+  --chalk: #f1efe7;
+  --chalk-dim: #b9c4bd;
+  --accent-yellow: #e8c468;
+  --accent-mint: #7fd8a6;
+  --accent-rose: #e6739f;
+  --rule: rgba(241, 239, 231, 0.16);
+
+  --font-display: 'Caveat', cursive;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  background-image: radial-gradient(rgba(241, 239, 231, 0.035) 1px, transparent 1px);
+  background-size: 18px 18px;
+  color: var(--chalk);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+textarea {
+  font-family: var(--font-body);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-yellow);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
