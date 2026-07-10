@@ -206,7 +206,7 @@ app.post('/api/generate', async (req, res) => {
   }
 });
 
-app.get('/api/health', (_req, res) => res.json({ ok: true }));
+app.get('/api/', (_req, res) => res.json({ ok: true }));
 
 app.listen(PORT, () => {
   console.log(`Study Assistant server running on http://localhost:${PORT}`);
