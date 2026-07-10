@@ -25,12 +25,24 @@ Return an object with exactly this shape:
       "options": [string, string, string, string],
       "answerIndex": number
     }
+  ],
+  "blocks": [
+    {
+      "type": "card" | "chart" | "checklist",
+      "title": string,
+      "content": string,           // required only if type is "card"
+      "chartType": "bar" | "pie",  // required only if type is "chart"
+      "labels": string[],          // required only if type is "chart" (must match values length)
+      "values": number[],          // required only if type is "chart" (must match labels length, values representing percentages/scores/distribution between 0 and 100)
+      "items": string[]            // required only if type is "checklist"
+    }
   ]
 }
 
 Rules:
 - "flashcards" must contain 6 to 12 items.
 - "quiz" must contain 5 to 8 items, each with exactly 4 "options" and one correct "answerIndex" (0-3).
+- "blocks" must contain 2 to 4 items. Provide a helpful mix of a card (summarizing key concepts or definitions), a chart (illustrating metrics, distribution, or relative breakdown), and a checklist (suggesting key action items or steps for studying).
 - Base everything on the user's input: extract real facts from notes, or use your own knowledge if given just a topic.
 - Do not repeat the same fact across multiple flashcards.
 - Output ONLY the JSON object. No prose before or after it.`;
@@ -65,6 +77,35 @@ function validateShape(data) {
     }
     if (typeof q.answerIndex !== 'number' || q.answerIndex < 0 || q.answerIndex > 3) {
       return `quiz question ${i} has an invalid answerIndex`;
+    }
+  }
+
+  // Validate blocks optionally (for backward compatibility)
+  if (data.blocks) {
+    if (!Array.isArray(data.blocks)) return 'invalid "blocks" type';
+    for (const [i, b] of data.blocks.entries()) {
+      if (typeof b?.type !== 'string' || !['card', 'chart', 'checklist'].includes(b.type)) {
+        return `block at index ${i} has an invalid type`;
+      }
+      if (typeof b?.title !== 'string' || !b.title.trim()) {
+        return `block at index ${i} is missing a title`;
+      }
+      if (b.type === 'card' && (typeof b.content !== 'string' || !b.content.trim())) {
+        return `card block at index ${i} is missing content`;
+      }
+      if (b.type === 'chart') {
+        if (!Array.isArray(b.labels) || !Array.isArray(b.values) || b.labels.length !== b.values.length) {
+          return `chart block at index ${i} has mismatched or missing labels and values`;
+        }
+        if (typeof b.chartType !== 'string' || !['bar', 'pie'].includes(b.chartType)) {
+          return `chart block at index ${i} has an invalid chartType`;
+        }
+      }
+      if (b.type === 'checklist') {
+        if (!Array.isArray(b.items) || b.items.length === 0 || b.items.some(item => typeof item !== 'string' || !item.trim())) {
+          return `checklist block at index ${i} has invalid string items`;
+        }
+      }
     }
   }
 

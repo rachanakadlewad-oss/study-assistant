@@ -40,9 +40,9 @@ export default function FlashcardsView({ cards }) {
 
   return (
     <div className="flashcards" onKeyDown={onKeyDown} tabIndex={0}>
-      <p className="progress-label">
+      <span className="progress-badge">
         Card {index + 1} of {order.length}
-      </p>
+      </span>
 
       <div
         className={`flashcard ${flipped ? 'is-flipped' : ''}`}
@@ -60,9 +60,28 @@ export default function FlashcardsView({ cards }) {
       <p className="hint">Tap the card to flip · ← → to move · space to flip</p>
 
       <div className="flashcard-controls">
-        <button onClick={prev}>Previous</button>
-        <button onClick={shuffle}>Shuffle</button>
-        <button onClick={next}>Next</button>
+        <button onClick={prev}>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          Previous
+        </button>
+        <button onClick={shuffle}>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="16 3 21 3 21 8" />
+            <line x1="4" y1="20" x2="21" y2="3" />
+            <polyline points="21 16 21 21 16 21" />
+            <line x1="15" y1="15" x2="21" y2="21" />
+            <line x1="4" y1="4" x2="9" y2="9" />
+          </svg>
+          Shuffle
+        </button>
+        <button onClick={next}>
+          Next
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
       </div>
     </div>
   );

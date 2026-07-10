@@ -5,6 +5,7 @@ import ErrorState from './components/ErrorState.jsx';
 import EmptyState from './components/EmptyState.jsx';
 import FlashcardsView from './components/FlashcardsView.jsx';
 import QuizView from './components/QuizView.jsx';
+import BlocksView from './components/BlocksView.jsx';
 import SessionHistory from './components/SessionHistory.jsx';
 import { useGenerate } from './hooks/useGenerate.js';
 import { getSessions, saveSession, deleteSession } from './sessions.js';
@@ -28,6 +29,7 @@ export default function App() {
         text,
         flashcards: result.flashcards,
         quiz: result.quiz,
+        blocks: result.blocks,
         createdAt: Date.now(),
       };
       setSessions(saveSession(session));
@@ -43,7 +45,7 @@ export default function App() {
   }
 
   function handleLoadSession(session) {
-    loadSession({ topic: session.topic, flashcards: session.flashcards, quiz: session.quiz });
+    loadSession({ topic: session.topic, flashcards: session.flashcards, quiz: session.quiz, blocks: session.blocks });
     setLastText(session.text);
     setTab('flashcards');
   }
@@ -90,13 +92,21 @@ export default function App() {
               >
                 Quiz ({data.quiz.length})
               </button>
+              {data.blocks && data.blocks.length > 0 && (
+                <button
+                  role="tab"
+                  aria-selected={tab === 'blocks'}
+                  className={tab === 'blocks' ? 'tab active' : 'tab'}
+                  onClick={() => setTab('blocks')}
+                >
+                  Overview ({data.blocks.length})
+                </button>
+              )}
             </div>
 
-            {tab === 'flashcards' ? (
-              <FlashcardsView cards={data.flashcards} />
-            ) : (
-              <QuizView questions={data.quiz} />
-            )}
+            {tab === 'flashcards' && <FlashcardsView cards={data.flashcards} />}
+            {tab === 'quiz' && <QuizView questions={data.quiz} />}
+            {tab === 'blocks' && data.blocks && <BlocksView blocks={data.blocks} />}
           </>
         )}
       </main>
