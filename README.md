@@ -28,7 +28,6 @@ Study Assistant is an AI-powered web application that helps students generate st
 
 
 ## 🚀 Setup
-https://github.com/rachanakadlewad-oss/study-assistant
 
 ### Prerequisites
 
@@ -39,7 +38,7 @@ https://github.com/rachanakadlewad-oss/study-assistant
 ### Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone <https://github.com/rachanakadlewad-oss/study-assistant>
 cd study-assistant
 ```
 
