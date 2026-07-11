@@ -112,3 +112,6 @@ This project uses the **Groq API** with the **Llama 3.3 70B Versatile** model to
 
 **Total Time:** **8 Hours**
 
+Video drive link
+https://drive.google.com/file/d/1us2FNElTvIicHD7VRBMRMNFGFCeyQQgL/view?usp=sharing
+
