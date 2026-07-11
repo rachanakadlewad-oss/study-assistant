@@ -1,10 +1,12 @@
-export async function generateStudyMaterial(text, signal) {
-  const API_URL = import.meta.env.VITE_API_URL;
+export async function generateStudyMaterial(text, previousData, signal) {
+  const actualSignal = signal !== undefined ? signal : (previousData instanceof AbortSignal ? previousData : undefined);
+  const actualPreviousData = previousData instanceof AbortSignal ? null : previousData;
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3002';
   const res = await fetch(`${API_URL}/api/generate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text }),
-    signal,
+    body: JSON.stringify({ text, previousData: actualPreviousData }),
+    signal: actualSignal,
   });
 
   let body;

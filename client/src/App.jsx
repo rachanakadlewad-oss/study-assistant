@@ -54,6 +54,22 @@ export default function App() {
     setSessions(deleteSession(id));
   }
 
+  async function handleRefine(refineText) {
+    const result = await generate(refineText, data);
+    if (result) {
+      const session = {
+        id: (crypto.randomUUID && crypto.randomUUID()) || String(Date.now()),
+        topic: result.topic || lastText.slice(0, 40),
+        text: lastText,
+        flashcards: result.flashcards,
+        quiz: result.quiz,
+        blocks: result.blocks,
+        createdAt: Date.now(),
+      };
+      setSessions(saveSession(session));
+    }
+  }
+
   return (
     <div className="app-shell">
       <header className="header">
@@ -103,6 +119,32 @@ export default function App() {
                 </button>
               )}
             </div>
+
+            <form className="refine-panel" onSubmit={(e) => {
+              e.preventDefault();
+              const input = e.target.elements.refinePrompt;
+              if (input && input.value.trim() && status !== 'loading') {
+                handleRefine(input.value.trim());
+                input.value = '';
+              }
+            }}>
+              <div className="refine-input-wrapper">
+                <svg className="sparkles-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707" />
+                  <circle cx="12" cy="12" r="4" />
+                </svg>
+                <input
+                  name="refinePrompt"
+                  type="text"
+                  placeholder="Ask the AI to refine this study set (e.g. 'add more cards' or 'make quiz harder')..."
+                  disabled={status === 'loading'}
+                  autoComplete="off"
+                />
+                <button type="submit" disabled={status === 'loading'}>
+                  Refine
+                </button>
+              </div>
+            </form>
 
             {tab === 'flashcards' && <FlashcardsView cards={data.flashcards} />}
             {tab === 'quiz' && <QuizView questions={data.quiz} />}

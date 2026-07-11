@@ -12,7 +12,7 @@ export function useGenerate() {
   const requestIdRef = useRef(0);
   const abortRef = useRef(null);
 
-  const generate = useCallback(async (text) => {
+  const generate = useCallback(async (text, previousData = null) => {
     // If a request is already in flight, cancel it — its result is now irrelevant.
     if (abortRef.current) abortRef.current.abort();
     const controller = new AbortController();
@@ -23,7 +23,7 @@ export function useGenerate() {
     setError('');
 
     try {
-      const result = await generateStudyMaterial(text, controller.signal);
+      const result = await generateStudyMaterial(text, previousData, controller.signal);
       if (requestId !== requestIdRef.current) return null; // superseded — ignore
       setData(result);
       setStatus('success');

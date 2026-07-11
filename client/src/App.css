@@ -992,5 +992,84 @@
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
 }
 
+/* ---------- Refinement Prompt Bar ---------- */
+.refine-panel {
+  margin-bottom: 24px;
+  animation: fadeInUp 0.4s ease;
+}
+
+.refine-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 6px 6px 6px 14px;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.refine-input-wrapper:focus-within {
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.sparkles-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.refine-input-wrapper input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 0.925rem;
+  padding: 6px 0;
+}
+
+.refine-input-wrapper input::placeholder {
+  color: #475569;
+}
+
+.refine-input-wrapper button {
+  background: var(--accent);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.25);
+  transition: all 0.2s ease;
+}
+
+.refine-input-wrapper button:hover:not(:disabled) {
+  background: #5154db;
+  transform: translateY(-1px);
+}
+
+.refine-input-wrapper button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .refine-input-wrapper {
+    padding: 6px;
+  }
+  .refine-input-wrapper input {
+    font-size: 0.85rem;
+  }
+  .refine-input-wrapper button {
+    padding: 8px 12px;
+    font-size: 0.825rem;
+  }
+}
+
 
 
