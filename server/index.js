@@ -124,7 +124,7 @@ function extractJson(raw) {
 }
 
 app.post('/api/generate', async (req, res) => {
-  const { text } = req.body || {};
+  const { text, previousData } = req.body || {};
 
   if (typeof text !== 'string' || !text.trim()) {
     return res.status(400).json({ error: 'Please provide some notes or a topic.' });
@@ -139,6 +139,48 @@ app.post('/api/generate', async (req, res) => {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 25000);
 
+  const messages = [];
+  if (previousData) {
+    const refineSystemPrompt = `You are a study-material editor. Given the user's refinement instructions and their previous study material, produce an updated study material as STRICT JSON only — no markdown fences, no commentary, no extra keys.
+
+Return an object in the EXACT same JSON shape:
+{
+  "topic": string,
+  "flashcards": [
+    { "front": string, "back": string }
+  ],
+  "quiz": [
+    {
+      "question": string,
+      "options": [string, string, string, string],
+      "answerIndex": number
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card" | "chart" | "checklist",
+      "title": string,
+      "content": string,
+      "chartType": "bar" | "pie",
+      "labels": string[],
+      "values": number[],
+      "items": string[]
+    }
+  ]
+}
+
+Rules:
+- Modify, add, delete, or refine the previous flashcards, quiz questions, or study blocks based on the user's request.
+- Keep the number of items reasonable (e.g. 6 to 12 flashcards, 5 to 8 quiz questions, 2 to 4 blocks).
+- Output ONLY the JSON object. No prose before or after it.`;
+
+    messages.push({ role: 'system', content: refineSystemPrompt });
+    messages.push({ role: 'user', content: `Here is the previous study material:\n${JSON.stringify(previousData)}\n\nRefinement request: ${text.trim()}` });
+  } else {
+    messages.push({ role: 'system', content: SYSTEM_PROMPT });
+    messages.push({ role: 'user', content: text.trim() });
+  }
+
   try {
     const groqRes = await fetch(GROQ_URL, {
       method: 'POST',
@@ -150,10 +192,7 @@ app.post('/api/generate', async (req, res) => {
         model: GROQ_MODEL,
         temperature: 0.4,
         response_format: { type: 'json_object' },
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: text.trim() },
-        ],
+        messages,
       }),
       signal: controller.signal,
     });
