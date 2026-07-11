@@ -78,7 +78,7 @@ export default function QuizView({ questions }) {
   if (!current) return null;
 
   return (
-    <div className="quiz">
+    <div className="quiz" key={index}>
       <p className="progress-label">
         Question {index + 1} of {activeQuestions.length} · Score {score}
       </p>

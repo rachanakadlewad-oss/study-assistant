@@ -98,7 +98,11 @@ export default function App() {
                 className={tab === 'flashcards' ? 'tab active' : 'tab'}
                 onClick={() => setTab('flashcards')}
               >
-                Flashcards ({data.flashcards.length})
+                <svg className="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="M7 8h10M7 12h10M7 16h6" />
+                </svg>
+                <span>Flashcards ({data.flashcards.length})</span>
               </button>
               <button
                 role="tab"
@@ -106,7 +110,11 @@ export default function App() {
                 className={tab === 'quiz' ? 'tab active' : 'tab'}
                 onClick={() => setTab('quiz')}
               >
-                Quiz ({data.quiz.length})
+                <svg className="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                  <path d="M9 12l2 2 4-4" />
+                </svg>
+                <span>Quiz ({data.quiz.length})</span>
               </button>
               {data.blocks && data.blocks.length > 0 && (
                 <button
@@ -115,7 +123,13 @@ export default function App() {
                   className={tab === 'blocks' ? 'tab active' : 'tab'}
                   onClick={() => setTab('blocks')}
                 >
-                  Overview ({data.blocks.length})
+                  <svg className="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="7" height="9" rx="1" />
+                    <rect x="14" y="3" width="7" height="5" rx="1" />
+                    <rect x="14" y="12" width="7" height="9" rx="1" />
+                    <rect x="3" y="16" width="7" height="5" rx="1" />
+                  </svg>
+                  <span>Overview ({data.blocks.length})</span>
                 </button>
               )}
             </div>
